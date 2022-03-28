@@ -265,11 +265,11 @@ Webflow.push(function () {
     $("#checkbox-2").removeAttr("disabled");
   }
 
-  function disableButtons(disablePlay = true) {
+  function disableButtons(disablePlay = true, disableWavesurfer) {
     $(".record_icon").removeClass("start_record");
     $(".control_share").addClass("control_disable");
     $(".audio-snippet_btn").addClass("control_disable");
-    if (wavesurfer) {
+    if (wavesurfer && disableWavesurfer) {
       wavesurfer.destroy();
     }
     if (disablePlay) {
@@ -327,7 +327,7 @@ Webflow.push(function () {
             mediaRecorder.onstart = function () {
               state = "recording";
               $("#checkbox-2").attr("disabled", "true");
-              disableButtons();
+              disableButtons(true, true);
               $(".record_icon").addClass("start_record");
               $(".countdown_record").addClass("start_record");
               animations[0].play();
