@@ -6,7 +6,9 @@ Webflow.push(function () {
   const API_URL = "https://staging-gateway-api.voicemod.net/v2/cloud";
   const X_KEY = "zqqztBHlkyIOAHMJgVaskJWrqO2ssXQo";
   const MOD_AUDIO = "control_upload_audio_transformed";
-  const ORIG_AUDIOO = "control_upload_audio_original";
+  const ORIG_AUDIO = "control_upload_audio_original";
+  const MAX_GET_RETRIES = 10;
+
   let state = "ready";
   let isTransformed = true;
   let chunks = [];
@@ -14,6 +16,7 @@ Webflow.push(function () {
   let recordInterval = 0;
   let recordIntervalId = null;
   let fetchInterval = null;
+  let retryCount = 0;
   let wavesurfer;
   const convertedFiles = {
     baby: "",
@@ -61,7 +64,7 @@ Webflow.push(function () {
 
   function resetPlay() {
     const transformedEl = document.getElementById(MOD_AUDIO);
-    const originalEl = document.getElementById(ORIG_AUDIOO);
+    const originalEl = document.getElementById(ORIG_AUDIO);
     if (transformedEl || originalEl) {
       transformedEl.currentTime = 0;
       transformedEl.pause();
@@ -87,7 +90,7 @@ Webflow.push(function () {
 
   function handlePlay() {
     const transformedEl = document.getElementById(MOD_AUDIO);
-    const originalEl = document.getElementById(ORIG_AUDIOO);
+    const originalEl = document.getElementById(ORIG_AUDIO);
 
     if (isTransformed) {
       transformedEl.play();
@@ -167,6 +170,7 @@ Webflow.push(function () {
       ".upload-fail-wrapper",
       ".record-request-wrapper",
       ".mic-detection-wrapper",
+      ".convert-failed-wrapper",
     ].forEach((modal) => {
       $(modal).css({ display: "none" });
     });
@@ -216,7 +220,7 @@ Webflow.push(function () {
 
   $(`.control_play`).on("click", function () {
     const transformedAudioElement = document.getElementById(MOD_AUDIO);
-    const originalAudioElement = document.getElementById(ORIG_AUDIOO);
+    const originalAudioElement = document.getElementById(ORIG_AUDIO);
 
     if (
       transformedAudioElement &&
@@ -369,6 +373,12 @@ Webflow.push(function () {
 
   $(".control_record").on("click", startRecordProcess);
 
+  function clearFetchInterval() {
+    clearInterval(fetchInterval);
+    fetchInterval = null;
+    retryCount = 0;
+  }
+
   async function initializeUpload() {
     // has recorded
     if (mediaRecorder && recordInterval > 0) {
@@ -387,6 +397,9 @@ Webflow.push(function () {
         }
 
         fetchInterval = setInterval(async () => {
+          if (retryCount > 10) {
+            clearFetchInterval();
+          }
           const results = await Promise.all(
             convertVoiceIds.map((voiceKey) =>
               fetch(`${API_URL}/audio/${fetchIds[voiceKey]}`, {
@@ -398,11 +411,10 @@ Webflow.push(function () {
           );
 
           if (results.some((res) => [400, 500].includes(res.status))) {
-            clearInterval(fetchInterval);
-            fetchInterval = null;
+            clearFetchInterval();
             throw new Error("Fetch was not successful!");
           }
-
+          retryCount += 1;
           if (results.every((res) => res.status === 200)) {
             let i = 0;
             for (const result of results) {
@@ -413,7 +425,7 @@ Webflow.push(function () {
             showReadyToPlayUI();
 
             const recentActiveFile = getFileUrlOnActiveType();
-            setAudio(convertedFiles.original, ORIG_AUDIOO);
+            setAudio(convertedFiles.original, ORIG_AUDIO);
             setAudio(recentActiveFile, MOD_AUDIO);
             if (wavesurfer) {
               wavesurfer.destroy();
@@ -434,8 +446,7 @@ Webflow.push(function () {
             wavesurfer.load(convertedFiles.original);
             wavesurfer.setVolume(0);
             chunks = [];
-            clearInterval(fetchInterval);
-            fetchInterval = null;
+            clearFetchInterval();
           }
         }, 5000);
       }, 50);
