@@ -303,6 +303,7 @@ Webflow.push(function () {
   async function startRecordProcess() {
     if (navigator.mediaDevices) {
       await validateMicrophoneAccess();
+      resetPlay();
       try {
         const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
