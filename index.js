@@ -282,16 +282,25 @@ Webflow.push(function () {
     localStorage.setItem(REQUEST_KEY, "true");
   }
 
+  async function validateMicrophoneAccess() {
+    // if has navigator.permissions, validate, else, trust localStorage
+    if (navigator?.permissions) {
+      const micQuery = await navigator?.permissions.query({
+        name: "microphone",
+      });
+      if (micQuery.state === "granted") {
+        setMicrophoneLocalStorage();
+      } else if (micQuery.state === "prompt") {
+        localStorage.removeItem(REQUEST_KEY);
+      }
+    }
+  }
+
   async function startRecordProcess() {
     if (navigator.mediaDevices) {
-      const hasMicrophone =
-        (await navigator.permissions.query({ name: "microphone" })).state ===
-        "granted";
-      if (hasMicrophone) {
-        setMicrophoneLocalStorage();
-      }
-      const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
+      await validateMicrophoneAccess();
       try {
+        const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
           if (!hasRequestedPermission) {
             $(".record-request-wrapper").css({ display: "flex" });
