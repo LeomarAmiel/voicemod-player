@@ -397,8 +397,9 @@ Webflow.push(function () {
         }
 
         fetchInterval = setInterval(async () => {
-          if (retryCount > 10) {
+          if (retryCount > MAX_GET_RETRIES) {
             clearFetchInterval();
+            $(".convert-failed-wrapper").css({ display: "flex" });
           }
           const results = await Promise.all(
             convertVoiceIds.map((voiceKey) =>
@@ -412,6 +413,7 @@ Webflow.push(function () {
 
           if (results.some((res) => [400, 500].includes(res.status))) {
             clearFetchInterval();
+            $(".convert-failed-wrapper").css({ display: "flex" });
             throw new Error("Fetch was not successful!");
           }
           retryCount += 1;
