@@ -461,47 +461,57 @@ Webflow.push(function () {
   }
 
   function showVoiceItem(voiceItem) {
-    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
-      $(".audio-snippet_icons").removeClass("description--current");
-      $(`.${voiceItem}--icon`).addClass("description--current");
-      convertVoiceIds.forEach((voiceId) =>
-        $(`#${voiceId}-btn`).removeClass("overlay-btn--current")
-      );
-      $(`#${voiceItem}-btn`).addClass("overlay-btn--current");
-      $(".audio-snippet_btn__wrapper").attr("data-voiceid", voiceItem);
-      $(".audio-snippet_description").removeClass("description--current");
-      $(`.${voiceItem}--description`).addClass("description--current");
-    }
+    $(".audio-snippet_icons").removeClass("description--current");
+    $(`.${voiceItem}--icon`).addClass("description--current");
+    convertVoiceIds.forEach((voiceId) =>
+      $(`#${voiceId}-btn`).removeClass("overlay-btn--current")
+    );
+    $(`#${voiceItem}-btn`).addClass("overlay-btn--current");
+    $(".audio-snippet_btn__wrapper").attr("data-voiceid", voiceItem);
+    $(".audio-snippet_description").removeClass("description--current");
+    $(`.${voiceItem}--description`).addClass("description--current");
   }
 
   $(".overlay--baby").on("click", function () {
-    showVoiceItem("baby");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("baby");
+      voiceClick();
+    }
   });
 
   $(".overlay--magic-chords").on("click", function () {
-    showVoiceItem("magic-chords");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("magic-chords");
+      voiceClick();
+    }
   });
 
   $(".overlay--cave").on("click", function () {
-    showVoiceItem("cave");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("cave");
+      voiceClick();
+    }
   });
 
   $(".overlay--radio-demon").on("click", function () {
-    showVoiceItem("radio-demon");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("radio-demon");
+      voiceClick();
+    }
   });
 
   $(".overlay--man-to-woman").on("click", function () {
-    showVoiceItem("man-to-woman");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("man-to-woman");
+      voiceClick();
+    }
   });
 
   $(".overlay--deep").on("click", function () {
-    showVoiceItem("deep");
-    voiceClick();
+    if (!$(".audio-snippet_btn").hasClass("control_disable")) {
+      showVoiceItem("deep");
+      voiceClick();
+    }
   });
   $("#checkbox-2").attr("disabled", "true");
 });
