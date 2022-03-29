@@ -76,7 +76,9 @@ Webflow.push(function () {
       transformedEl.pause();
       originalEl.pause();
       originalEl.currentTime = 0;
-      wavesurfer.stop();
+      if (wavesurfer) {
+        wavesurfer.stop();
+      }
     }
   }
 
@@ -306,12 +308,15 @@ Webflow.push(function () {
     }
   }
 
+  function getState() {
+    return state;
+  }
+
   async function startRecordProcess() {
     resetPlay();
     if (navigator.mediaDevices) {
       await validateMicrophoneAccess();
       try {
-        console.log({ state });
         const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
           if (!hasRequestedPermission) {
