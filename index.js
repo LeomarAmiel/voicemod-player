@@ -349,9 +349,9 @@ Webflow.push(function () {
           $(".mic-detection-wrapper").css({ display: "none" });
           if (mediaRecorder) {
             mediaRecorder.onstart = function () {
+              disableButtons(true, true);
               state = "recording";
               $("#checkbox-2").attr("disabled", "true");
-              disableButtons(true, true);
               $(".record_icon").addClass("start_record");
               $(".countdown_record").addClass("start_record");
               animations[0].play();
