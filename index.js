@@ -15,6 +15,7 @@ Webflow.push(function () {
       "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm",
   };
 
+  // ready | recording | loading | ready_to_play |  playing | paused | playing
   let state = "ready";
   let isTransformed = true;
   let chunks = [];
@@ -294,6 +295,10 @@ Webflow.push(function () {
     if (disablePlay) {
       $(".toggle-text").addClass("control_disable");
       $(".control_play").addClass("control_disable");
+    }
+    if(state === "playing") {
+      toggleIcon();
+
     }
   }
 
