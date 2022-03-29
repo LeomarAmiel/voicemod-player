@@ -186,7 +186,6 @@ Webflow.push(function () {
     [
       // to keep
       ".upload-fail-wrapper",
-      ".record-request-wrapper",
       ".mic-detection-wrapper",
       ".convert-failed-wrapper",
     ].forEach((modal) => {
@@ -334,13 +333,9 @@ Webflow.push(function () {
     resetPlay();
     if (navigator.mediaDevices) {
       await validateMicrophoneAccess();
-      console.log("are we trying?");
       try {
         const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
-          if (!hasRequestedPermission) {
-            $(".record-request-wrapper").css({ display: "flex" });
-          }
           const userMedia = await navigator.mediaDevices.getUserMedia({
             audio: true,
           });
@@ -352,9 +347,7 @@ Webflow.push(function () {
           );
 
           recordInterval = 0;
-          $(".record-request-wrapper").css({ display: "none" });
           $(".mic-detection-wrapper").css({ display: "none" });
-          console.log({ mediaRecorder });
           if (mediaRecorder) {
             mediaRecorder.onstart = function () {
               disableButtons(true, true);
@@ -383,10 +376,8 @@ Webflow.push(function () {
               chunks.push(e.data);
             };
             if (hasRequestedPermission) {
-              console.log("IS STARTING");
               mediaRecorder.start();
             } else {
-              console.log("IS ON ELSe")
               userMedia.getTracks().forEach((track) => track.stop());
             }
             setMicrophoneLocalStorage();
@@ -395,8 +386,6 @@ Webflow.push(function () {
           mediaRecorder.stop();
         }
       } catch (e) {
-        console.log("Crashing on record try?");
-        $(".record-request-wrapper").css({ display: "none" });
         $(".mic-detection-wrapper").css({ display: "flex" });
         localStorage.removeItem(REQUEST_KEY);
       }
@@ -556,7 +545,6 @@ Webflow.push(function () {
         if (navigator.canShare()) {
           await navigator.share(shareData);
         }
-        console.log(" was able to share ");
       } catch (e) {
         console.log({ e });
       }
