@@ -324,7 +324,9 @@ Webflow.push(function () {
         if (micQuery.state === "granted") {
           setMicrophoneLocalStorage();
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log({ e });
+      }
     }
   }
 
@@ -332,6 +334,7 @@ Webflow.push(function () {
     resetPlay();
     if (navigator.mediaDevices) {
       await validateMicrophoneAccess();
+      console.log("are we trying?");
       try {
         const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
