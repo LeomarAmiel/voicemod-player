@@ -8,6 +8,12 @@ Webflow.push(function () {
   const MOD_AUDIO = "control_upload_audio_transformed";
   const ORIG_AUDIO = "control_upload_audio_original";
   const MAX_GET_RETRIES = 10;
+  const workerOptions = {
+    OggOpusEncoderWasmPath:
+      "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm",
+    WebMOpusEncoderWasmPath:
+      "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm",
+  };
 
   let state = "ready";
   let isTransformed = true;
@@ -305,6 +311,7 @@ Webflow.push(function () {
     if (navigator.mediaDevices) {
       await validateMicrophoneAccess();
       try {
+        console.log({ state });
         const hasRequestedPermission = localStorage.getItem(REQUEST_KEY);
         if (["ready", "ready_to_play", "playing", "paused"].includes(state)) {
           if (!hasRequestedPermission) {
@@ -317,12 +324,7 @@ Webflow.push(function () {
           mediaRecorder = new OpusMediaRecorder(
             userMedia,
             { mimeType: "audio/wav" },
-            {
-              OggOpusEncoderWasmPath:
-                "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm",
-              WebMOpusEncoderWasmPath:
-                "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm",
-            }
+            workerOptions
           );
 
           recordInterval = 0;
