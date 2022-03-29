@@ -7,7 +7,16 @@ Webflow.push(function () {
   const X_KEY = "zqqztBHlkyIOAHMJgVaskJWrqO2ssXQo";
   const MOD_AUDIO = "control_upload_audio_transformed";
   const ORIG_AUDIO = "control_upload_audio_original";
+  const SHARE_SNIPPET_URL = "https://voicemod-net.webflow.io/share-snippet";
   const MAX_GET_RETRIES = 10;
+  function getShareData(url) {
+    return {
+      title: "Voicemod share snippet",
+      text: "Listen to my voicemod!",
+      url,
+    };
+  }
+
   const workerOptions = {
     OggOpusEncoderWasmPath:
       "https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm",
@@ -290,15 +299,14 @@ Webflow.push(function () {
     $(".control_share").addClass("control_disable");
     $(".audio-snippet_btn").addClass("control_disable");
     if (disableWavesurfer) {
-      destroyWavesurfer()
+      destroyWavesurfer();
     }
     if (disablePlay) {
       $(".toggle-text").addClass("control_disable");
       $(".control_play").addClass("control_disable");
     }
-    if(state === "playing") {
+    if (state === "playing") {
       toggleIcon();
-
     }
   }
 
@@ -449,7 +457,7 @@ Webflow.push(function () {
             const recentActiveFile = getFileUrlOnActiveType();
             setAudio(convertedFiles.original, ORIG_AUDIO);
             setAudio(recentActiveFile, MOD_AUDIO);
-            destroyWavesurfer()
+            destroyWavesurfer();
             wavesurfer = WaveSurfer.create({
               container: ".wf_wrap",
               barWidth: 2,
@@ -531,5 +539,18 @@ Webflow.push(function () {
       voiceClick();
     }
   });
+
+  $(".control_share").on("click", function () {
+    if (!$(".control_share").hasClass("control_disable")) {
+      const voiceId =
+        $(".audio-snippet_btn__wrapper").attr("data-voiceid") || "baby";
+      const id = fetchIds[voiceId];
+      const shareData = getShareData(
+        `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`
+      );
+      navigator.share(shareData);
+    }
+  });
+
   $("#checkbox-2").attr("disabled", "true");
 });
