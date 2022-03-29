@@ -23,9 +23,7 @@ Webflow.push(function () {
     const audioEl = document.getElementById(id);
     if (audioEl) {
       audioEl.src = url;
-      audioEl = document.createElement("audio");
       audioEl.id = id;
-      audioEl.src = url;
       audioEl.preload = "metadata";
       audioEl.volume = 1;
     }
