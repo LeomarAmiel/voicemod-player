@@ -317,19 +317,15 @@ Webflow.push(function () {
   async function validateMicrophoneAccess() {
     // if has navigator.permissions, validate, else, trust localStorage
     if (navigator?.permissions) {
-      const micQuery = await navigator?.permissions.query({
-        name: "microphone",
-      });
-      if (micQuery.state === "granted") {
-        setMicrophoneLocalStorage();
-      } else if (micQuery.state === "prompt") {
-        localStorage.removeItem(REQUEST_KEY);
-      }
+      try {
+        const micQuery = await navigator?.permissions.query({
+          name: "microphone",
+        });
+        if (micQuery.state === "granted") {
+          setMicrophoneLocalStorage();
+        }
+      } catch (e) {}
     }
-  }
-
-  function getState() {
-    return state;
   }
 
   async function startRecordProcess() {
@@ -549,7 +545,6 @@ Webflow.push(function () {
         `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`
       );
       try {
-        console.log("trying to share");
         if (navigator.canShare()) {
           await navigator.share(shareData);
         }
