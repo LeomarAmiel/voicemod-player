@@ -542,9 +542,7 @@ Webflow.push(function () {
         `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`
       );
       try {
-        if (navigator.canShare()) {
-          await navigator.share(shareData);
-        }
+        await navigator.share(shareData);
       } catch (e) {
         console.log({ e });
       }
