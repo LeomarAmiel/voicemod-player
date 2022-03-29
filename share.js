@@ -8,6 +8,7 @@ Webflow.push(function () {
   const AUDIO_ID = "control_audio";
 
   async function fetchAudioFromParams() {
+    hideIcons();
     const result = await fetch(`${API_URL}/audio/${params.id}`, {
       headers: {
         "x-api-key": X_KEY,
@@ -16,7 +17,6 @@ Webflow.push(function () {
 
     const { url } = await result.json();
     setAudio(url, AUDIO_ID);
-    hideIcons();
   }
 
   function setAudio(url, id) {
