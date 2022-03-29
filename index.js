@@ -386,6 +386,7 @@ Webflow.push(function () {
               console.log("IS STARTING");
               mediaRecorder.start();
             } else {
+              console.log("IS ON ELSe")
               userMedia.getTracks().forEach((track) => track.stop());
             }
             setMicrophoneLocalStorage();
