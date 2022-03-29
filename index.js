@@ -277,12 +277,19 @@ Webflow.push(function () {
     $("#checkbox-2").removeAttr("disabled");
   }
 
+  function destroyWavesurfer() {
+    if (wavesurfer) {
+      wavesurfer.destroy();
+    }
+    wavesurfer = null;
+  }
+
   function disableButtons(disablePlay = true, disableWavesurfer) {
     $(".record_icon").removeClass("start_record");
     $(".control_share").addClass("control_disable");
     $(".audio-snippet_btn").addClass("control_disable");
-    if (wavesurfer && disableWavesurfer) {
-      wavesurfer.destroy();
+    if (disableWavesurfer) {
+      destroyWavesurfer()
     }
     if (disablePlay) {
       $(".toggle-text").addClass("control_disable");
@@ -437,9 +444,7 @@ Webflow.push(function () {
             const recentActiveFile = getFileUrlOnActiveType();
             setAudio(convertedFiles.original, ORIG_AUDIO);
             setAudio(recentActiveFile, MOD_AUDIO);
-            if (wavesurfer) {
-              wavesurfer.destroy();
-            }
+            destroyWavesurfer()
             wavesurfer = WaveSurfer.create({
               container: ".wf_wrap",
               barWidth: 2,
