@@ -354,6 +354,7 @@ Webflow.push(function () {
           recordInterval = 0;
           $(".record-request-wrapper").css({ display: "none" });
           $(".mic-detection-wrapper").css({ display: "none" });
+          console.log({ mediaRecorder });
           if (mediaRecorder) {
             mediaRecorder.onstart = function () {
               disableButtons(true, true);
@@ -382,15 +383,18 @@ Webflow.push(function () {
               chunks.push(e.data);
             };
             if (hasRequestedPermission) {
+              console.log("IS STARTING");
               mediaRecorder.start();
             } else {
               userMedia.getTracks().forEach((track) => track.stop());
             }
+            setMicrophoneLocalStorage();
           }
         } else if (state === "recording") {
           mediaRecorder.stop();
         }
       } catch (e) {
+        console.log("Crashing on record try?");
         $(".record-request-wrapper").css({ display: "none" });
         $(".mic-detection-wrapper").css({ display: "flex" });
         localStorage.removeItem(REQUEST_KEY);
