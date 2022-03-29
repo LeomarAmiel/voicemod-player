@@ -540,7 +540,7 @@ Webflow.push(function () {
     }
   });
 
-  $(".control_share").on("click", function () {
+  $(".control_share").on("click", async function () {
     if (!$(".control_share").hasClass("control_disable")) {
       const voiceId =
         $(".audio-snippet_btn__wrapper").attr("data-voiceid") || "baby";
@@ -548,7 +548,15 @@ Webflow.push(function () {
       const shareData = getShareData(
         `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`
       );
-      navigator.share(shareData);
+      try {
+        console.log("trying to share");
+        if (navigator.canShare()) {
+          await navigator.share(shareData);
+        }
+        console.log(" was able to share ");
+      } catch (e) {
+        console.log({ e });
+      }
     }
   });
 
