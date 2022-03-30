@@ -538,15 +538,30 @@ Webflow.push(function () {
       const voiceId =
         $(".audio-snippet_btn__wrapper").attr("data-voiceid") || "baby";
       const id = fetchIds[voiceId];
-      const shareData = getShareData(
-        `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`
-      );
-      try {
-        await navigator.share(shareData);
-      } catch (e) {
-        console.log({ e });
+      const url = `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`;
+      if (navigator?.share) {
+        try {
+          const shareData = getShareData(url);
+          if (navigator?.canShare?.(shareData)) {
+            await navigator.share(shareData);
+          }
+        } catch (e) {
+          console.log({ e });
+        }
+      } else {
+        $(".share-link-wrapper").css({ display: "block" });
+        $(".share-link").text(shareData.url);
       }
     }
+  });
+
+  $(".share-link_btn").on("click", async function () {
+    const voiceId =
+      $(".audio-snippet_btn__wrapper").attr("data-voiceid") || "baby";
+    const id = fetchIds[voiceId];
+    const text = `${SHARE_SNIPPET_URL}?voiceId=${voiceId}&id=${id}`;
+    await navigator.clipboard.writeText(text);
+    $(".share-link-wrapper").css({ display: "none" });
   });
 
   $("#checkbox-2").attr("disabled", "true");
