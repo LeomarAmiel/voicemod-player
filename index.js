@@ -550,7 +550,7 @@ Webflow.push(function () {
         }
       } else {
         $(".share-link-wrapper").css({ display: "block" });
-        $(".share-link").text(shareData.url);
+        $(".share-link").text(url);
       }
     }
   });
