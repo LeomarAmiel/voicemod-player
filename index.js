@@ -347,11 +347,9 @@ Webflow.push(function () {
           );
 
           recordInterval = 0;
-          console.log({ recordInterval });
           $(".mic-detection-wrapper").css({ display: "none" });
           if (mediaRecorder) {
             mediaRecorder.onstart = function () {
-              console.log({ recordInterval });
               disableButtons(true, true);
               state = "recording";
               $("#checkbox-2").attr("disabled", "true");
@@ -360,7 +358,6 @@ Webflow.push(function () {
               animations[0].play();
               recordIntervalId = setInterval(() => {
                 recordInterval += 1;
-                console.log({ "recordInterval in interval": recordInterval });
                 if (recordInterval > 10) {
                   stopRecord();
                 }
@@ -372,8 +369,8 @@ Webflow.push(function () {
               userMedia.getTracks().forEach((track) => track.stop());
               animations[0].stop();
               clearInterval(recordIntervalId);
-              initializeUpload();
               recordIntervalId = null;
+              initializeUpload();
             };
 
             mediaRecorder.ondataavailable = function (e) {
