@@ -46,6 +46,7 @@ Webflow.push(function () {
       };
 
       audioEl.onended = function () {
+        console.log("has ended?");
         toggleIcon();
         wavesurfer.pause();
         audioEl.currentTime = 0;
