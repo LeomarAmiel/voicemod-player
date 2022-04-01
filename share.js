@@ -48,7 +48,6 @@ Webflow.push(function () {
       audioEl.onended = function () {
         toggleIcon();
         wavesurfer.pause();
-        audioEl.currentTime = 0;
         shouldResetWavesurfer = true;
       };
     }
