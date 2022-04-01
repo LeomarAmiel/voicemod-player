@@ -23,8 +23,8 @@ Webflow.push(function () {
   }
 
   function toggleIcon() {
-    $(".pause_icon-share").removeClass("played");
-    $(".play_icon-share").addClass("paused");
+    $(".pause_icon-share").toggleClass("played");
+    $(".play_icon-share").toggleClass("paused");
   }
 
   function secondsToMinutes(time) {
