@@ -23,7 +23,6 @@ Webflow.push(function () {
   }
 
   function toggleIcon() {
-    state = "ready_to_play";
     $(".pause_icon-share").removeClass("played");
     $(".play_icon-share").addClass("paused");
   }
