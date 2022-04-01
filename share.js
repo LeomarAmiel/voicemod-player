@@ -46,6 +46,7 @@ Webflow.push(function () {
 
       audioEl.onended = function () {
         toggleIcon();
+        wavesurfer.pause();
       };
     }
   }
@@ -86,11 +87,12 @@ Webflow.push(function () {
   $(".control_play-share").on("click", function () {
     const audioEl = document.getElementById(AUDIO_ID);
     isPlaying = !isPlaying;
-    console.log({ isPlaying })
     if (isPlaying) {
-      audioEl.pause();
-    } else {
       audioEl.play();
+      wavesurfer.play();
+    } else {
+      audioEl.pause();
+      wavesurfer.pause();
     }
     toggleIcon();
   });
