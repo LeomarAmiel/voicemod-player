@@ -47,6 +47,8 @@ Webflow.push(function () {
       audioEl.onended = function () {
         toggleIcon();
         wavesurfer.pause();
+        audioEl.currentTime = 0;
+        wavesurfer.seekTo(0);
       };
     }
   }
