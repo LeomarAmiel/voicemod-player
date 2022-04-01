@@ -33,7 +33,7 @@ Webflow.push(function () {
     const voiceIconToShow = params.voiceId;
 
     $(".icon_img").css({ display: "none" });
-    $(`#${voiceIconToShow}`).css({ display: "inline-block" });
+    $(`#${voiceIconToShow}`).css({ display: "flex" });
   }
 
   fetchAudioFromParams();
