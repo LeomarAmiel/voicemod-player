@@ -46,7 +46,7 @@ Webflow.push(function () {
       };
 
       audioEl.onended = function () {
-        console.log("has ended?");
+        isPlaying = false;
         toggleIcon();
         wavesurfer.pause();
         audioEl.currentTime = 0;
@@ -92,7 +92,6 @@ Webflow.push(function () {
     const audioEl = document.getElementById(AUDIO_ID);
     isPlaying = !isPlaying;
     if (shouldResetWavesurfer && isPlaying) {
-      console.log("SHOULD SEEK TO 0?");
       wavesurfer.seekTo(0);
       shouldResetWavesurfer = false;
     }
