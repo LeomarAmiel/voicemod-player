@@ -86,6 +86,7 @@ Webflow.push(function () {
   $(".control_play-share").on("click", function () {
     const audioEl = document.getElementById(AUDIO_ID);
     isPlaying = !isPlaying;
+    console.log({ isPlaying })
     if (isPlaying) {
       audioEl.pause();
     } else {
