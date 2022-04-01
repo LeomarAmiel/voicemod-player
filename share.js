@@ -18,8 +18,8 @@ Webflow.push(function () {
     });
 
     const { url } = await result.json();
-    setAudio(url);
     setWaveformData(url);
+    setAudio(url);
   }
 
   function toggleIcon() {
