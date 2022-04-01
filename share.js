@@ -6,6 +6,7 @@ Webflow.push(function () {
     new URLSearchParams(window.location.search)
   );
   let wavesurfer;
+  let isPlaying = false;
   const AUDIO_ID = "control_audio";
 
   async function fetchAudioFromParams() {
@@ -21,6 +22,18 @@ Webflow.push(function () {
     setWaveformData(url);
   }
 
+  function toggleIcon() {
+    state = "ready_to_play";
+    $(".pause_icon-share").removeClass("played");
+    $(".play_icon-share").addClass("paused");
+  }
+
+  function secondsToMinutes(time) {
+    return (
+      Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
+    );
+  }
+
   function setAudio(url, id) {
     const audioEl = document.getElementById(id);
     if (audioEl) {
@@ -28,6 +41,14 @@ Webflow.push(function () {
       audioEl.id = id;
       audioEl.preload = "metadata";
       audioEl.volume = 1;
+
+      audioEl.onloadedmetadata = function () {
+        $(".duration-share").text(secondsToMinutes(this.duration));
+      };
+
+      audioEl.onended = function () {
+        toggleIcon();
+      };
     }
   }
 
@@ -63,6 +84,17 @@ Webflow.push(function () {
     wavesurfer.load(url);
     wavesurfer.setVolume(0);
   }
+
+  $(".control_play-share").on("click", function () {
+    const audioEl = document.getElementById(id);
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      audioEl.pause();
+    } else {
+      audioEl.play();
+    }
+    toggleIcon();
+  });
 
   fetchAudioFromParams();
 });
