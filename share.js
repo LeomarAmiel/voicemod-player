@@ -7,6 +7,7 @@ Webflow.push(function () {
   );
   let wavesurfer;
   let isPlaying = false;
+  let shouldResetWavesurfer = false;
   const AUDIO_ID = "control_audio";
 
   async function fetchAudioFromParams() {
@@ -48,7 +49,7 @@ Webflow.push(function () {
         toggleIcon();
         wavesurfer.pause();
         audioEl.currentTime = 0;
-        wavesurfer.seekTo(0);
+        shouldResetWavesurfer = true;
       };
     }
   }
@@ -89,6 +90,10 @@ Webflow.push(function () {
   $(".control_play-share").on("click", function () {
     const audioEl = document.getElementById(AUDIO_ID);
     isPlaying = !isPlaying;
+    if (shouldResetWavesurfer && isPlaying) {
+      wavesurfer.seekTo(0);
+      shouldResetWavesurfer = false;
+    }
     if (isPlaying) {
       audioEl.play();
       wavesurfer.play();
