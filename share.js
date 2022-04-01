@@ -18,7 +18,7 @@ Webflow.push(function () {
     });
 
     const { url } = await result.json();
-    setAudio(url, AUDIO_ID);
+    setAudio(url);
     setWaveformData(url);
   }
 
@@ -33,8 +33,8 @@ Webflow.push(function () {
     );
   }
 
-  function setAudio(url, id) {
-    const audioEl = document.getElementById(id);
+  function setAudio(url) {
+    const audioEl = document.getElementById(AUDIO_ID);
     if (audioEl) {
       audioEl.src = url;
       audioEl.id = id;
@@ -85,7 +85,7 @@ Webflow.push(function () {
   }
 
   $(".control_play-share").on("click", function () {
-    const audioEl = document.getElementById(id);
+    const audioEl = document.getElementById(AUDIO_ID);
     isPlaying = !isPlaying;
     if (isPlaying) {
       audioEl.pause();
