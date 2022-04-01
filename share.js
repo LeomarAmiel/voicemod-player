@@ -5,6 +5,7 @@ Webflow.push(function () {
   const params = Object.fromEntries(
     new URLSearchParams(window.location.search)
   );
+  let wavesurfer;
   const AUDIO_ID = "control_audio";
 
   async function fetchAudioFromParams() {
@@ -17,6 +18,7 @@ Webflow.push(function () {
 
     const { url } = await result.json();
     setAudio(url, AUDIO_ID);
+    setWaveformData(url);
   }
 
   function setAudio(url, id) {
@@ -34,6 +36,32 @@ Webflow.push(function () {
 
     $(".icon_img").css({ display: "none" });
     $(`#${voiceIconToShow}`).css({ display: "flex" });
+  }
+
+  function destroyWavesurfer() {
+    if (wavesurfer) {
+      wavesurfer.destroy();
+    }
+    wavesurfer = null;
+  }
+
+  function setWaveformData(url) {
+    destroyWavesurfer();
+    wavesurfer = WaveSurfer.create({
+      container: ".waveform-share",
+      barWidth: 2,
+      barHeight: 1,
+      barMinHeight: 6,
+      barGap: null,
+      responsive: true,
+      interact: false,
+      progressColor: "#00fff6",
+      cursorColor: "transparent",
+      height: 24,
+      barRadius: 0.5,
+    });
+    wavesurfer.load(url);
+    wavesurfer.setVolume(0);
   }
 
   fetchAudioFromParams();
