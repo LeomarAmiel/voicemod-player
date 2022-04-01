@@ -401,77 +401,81 @@ Webflow.push(function () {
     retryCount = 0;
   }
 
+  async function fetchAudioUrl() {
+    fetchInterval = setInterval(async () => {
+      if (retryCount > MAX_GET_RETRIES) {
+        clearFetchInterval();
+        $(".convert-failed-wrapper").css({ display: "flex" });
+      }
+      const results = await Promise.all(
+        convertVoiceIds.map((voiceKey) =>
+          fetch(`${API_URL}/audio/${fetchIds[voiceKey]}`, {
+            headers: {
+              "x-api-key": X_KEY,
+            },
+          })
+        )
+      );
+
+      if (results.some((res) => [400, 500].includes(res.status))) {
+        clearFetchInterval();
+        $(".convert-failed-wrapper").css({ display: "flex" });
+        throw new Error("Fetch was not successful!");
+      }
+      retryCount += 1;
+      if (results.every((res) => res.status === 200)) {
+        let i = 0;
+        for (const result of results) {
+          const { url } = await result.json();
+          convertedFiles[convertVoiceIds[i]] = url;
+          i += 1;
+        }
+        showReadyToPlayUI();
+
+        const recentActiveFile = getFileUrlOnActiveType();
+        setAudio(convertedFiles.original, ORIG_AUDIO);
+        setAudio(recentActiveFile, MOD_AUDIO);
+        destroyWavesurfer();
+        wavesurfer = WaveSurfer.create({
+          container: ".wf_wrap",
+          barWidth: 2,
+          barHeight: 1,
+          barMinHeight: 6,
+          barGap: null,
+          responsive: true,
+          interact: false,
+          progressColor: "#00fff6",
+          cursorColor: "transparent",
+          height: 24,
+          barRadius: 0.5,
+        });
+        wavesurfer.load(convertedFiles.original);
+        wavesurfer.setVolume(0);
+        chunks = [];
+        clearFetchInterval();
+      }
+    }, 1000);
+  }
+
   async function initializeUpload() {
     // has recorded
     if (mediaRecorder && recordInterval > 0) {
       stopRecord();
-      setTimeout(async () => {
-        const blob = new Blob(chunks, { type: "audio/wav" });
-        const file = new File([blob], `recoring-for-voicemod.wav`, {
-          type: "audio/wav",
-        });
-        const formData = new FormData();
-        formData.append("audioFile", file);
-        const success = await submitAudioData(formData);
+      const blob = new Blob(chunks, { type: "audio/wav" });
+      const file = new File([blob], `recoring-for-voicemod.wav`, {
+        type: "audio/wav",
+      });
+      const formData = new FormData();
+      formData.append("audioFile", file);
+      const success = await submitAudioData(formData);
 
-        if (!success) {
-          $(".upload-fail-wrapper").css({ display: "flex" });
-        }
+      if (!success) {
+        $(".upload-fail-wrapper").css({ display: "flex" });
+      }
 
-        fetchInterval = setInterval(async () => {
-          if (retryCount > MAX_GET_RETRIES) {
-            clearFetchInterval();
-            $(".convert-failed-wrapper").css({ display: "flex" });
-          }
-          const results = await Promise.all(
-            convertVoiceIds.map((voiceKey) =>
-              fetch(`${API_URL}/audio/${fetchIds[voiceKey]}`, {
-                headers: {
-                  "x-api-key": X_KEY,
-                },
-              })
-            )
-          );
-
-          if (results.some((res) => [400, 500].includes(res.status))) {
-            clearFetchInterval();
-            $(".convert-failed-wrapper").css({ display: "flex" });
-            throw new Error("Fetch was not successful!");
-          }
-          retryCount += 1;
-          if (results.every((res) => res.status === 200)) {
-            let i = 0;
-            for (const result of results) {
-              const { url } = await result.json();
-              convertedFiles[convertVoiceIds[i]] = url;
-              i += 1;
-            }
-            showReadyToPlayUI();
-
-            const recentActiveFile = getFileUrlOnActiveType();
-            setAudio(convertedFiles.original, ORIG_AUDIO);
-            setAudio(recentActiveFile, MOD_AUDIO);
-            destroyWavesurfer();
-            wavesurfer = WaveSurfer.create({
-              container: ".wf_wrap",
-              barWidth: 2,
-              barHeight: 1,
-              barMinHeight: 6,
-              barGap: null,
-              responsive: true,
-              interact: false,
-              progressColor: "#00fff6",
-              cursorColor: "transparent",
-              height: 24,
-              barRadius: 0.5,
-            });
-            wavesurfer.load(convertedFiles.original);
-            wavesurfer.setVolume(0);
-            chunks = [];
-            clearFetchInterval();
-          }
-        }, 5000);
-      }, 50);
+      setTimeout(() => {
+        fetchAudioUrl();
+      }, 1000);
     }
   }
 
