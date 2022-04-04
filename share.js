@@ -83,7 +83,7 @@ Webflow.push(function () {
       progressColor: "#00fff6",
       cursorColor: "transparent",
       height: 24,
-      barRadius: 4,
+      barRadius: 2,
     });
     wavesurfer.load(url);
     wavesurfer.setVolume(0);
