@@ -447,7 +447,7 @@ Webflow.push(function () {
           progressColor: "#00fff6",
           cursorColor: "transparent",
           height: 24,
-          barRadius: 4,
+          barRadius: 1,
         });
         wavesurfer.load(convertedFiles.original);
         wavesurfer.setVolume(0);
