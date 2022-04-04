@@ -75,9 +75,9 @@ Webflow.push(function () {
     wavesurfer = WaveSurfer.create({
       container: ".waveform-share",
       barWidth: 2,
-      barHeight: 1,
+      barHeight: 1.1,
       barMinHeight: 6,
-      barGap: null,
+      barGap: 0.5,
       responsive: true,
       interact: false,
       progressColor: "#00fff6",
