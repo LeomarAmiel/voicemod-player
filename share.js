@@ -42,6 +42,7 @@ Webflow.push(function () {
       audioEl.volume = 1;
 
       audioEl.onloadedmetadata = function () {
+        $(".control_play-share").removeClass("control_disable");
         $(".duration-share").text(secondsToMinutes(this.duration));
       };
 
@@ -89,20 +90,22 @@ Webflow.push(function () {
   }
 
   $(".control_play-share").on("click", function () {
-    const audioEl = document.getElementById(AUDIO_ID);
-    isPlaying = !isPlaying;
-    if (shouldResetWavesurfer && isPlaying) {
-      wavesurfer.seekTo(0);
-      shouldResetWavesurfer = false;
+    if (!$(".control_play-share").hasClass("control_disable")) {
+      const audioEl = document.getElementById(AUDIO_ID);
+      isPlaying = !isPlaying;
+      if (shouldResetWavesurfer && isPlaying) {
+        wavesurfer.seekTo(0);
+        shouldResetWavesurfer = false;
+      }
+      if (isPlaying) {
+        audioEl.play();
+        wavesurfer.play();
+      } else {
+        audioEl.pause();
+        wavesurfer.pause();
+      }
+      toggleIcon();
     }
-    if (isPlaying) {
-      audioEl.play();
-      wavesurfer.play();
-    } else {
-      audioEl.pause();
-      wavesurfer.pause();
-    }
-    toggleIcon();
   });
 
   fetchAudioFromParams();
