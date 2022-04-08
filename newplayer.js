@@ -1,12 +1,10 @@
-let isPlaying = false;
-let shouldResetWavesurfer = false;
 var plyBtn = document.getElementById("nplayer_play");
 var wavesurfer = WaveSurfer.create({
   container: ".waveform-share",
   height: 32,
   barRadius: 2,
   barHeight: 1.5,
-  barWidth: 3,
+  barWidth: 2.5,
   barGap: 4,
   responsive: true,
   interact: false,
@@ -23,15 +21,8 @@ function toggleIcon() {
   $(".play_icon-nplayer").toggleClass("paused");
 }
 
-$(".control_play-nplayer").on("click", function () {
-  if (shouldResetWavesurfer && isPlaying) {
-    wavesurfer.seekTo(0);
-    shouldResetWavesurfer = false;
-  }
-  if (isPlaying) {
-    wavesurfer.play();
-  } else {
-    wavesurfer.pause();
-  }
+plyBtn.onclick = function () {
+  wavesurfer.play();
+  wavesurfer.seekTo(0);
   toggleIcon();
-});
+};
