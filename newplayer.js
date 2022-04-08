@@ -1,4 +1,3 @@
-let wavesurfer;
 let isPlaying = false;
 let shouldResetWavesurfer = false;
 var plyBtn = document.getElementById("nplayer_play");
