@@ -18,9 +18,6 @@ wavesurfer.load(
 
 plyBtn.onclick = function () {
   wavesurfer.playPause();
-};
-
-$(".control_play-nplayer").on("click", function () {
   $(".pause_icon-nplayer").toggleClass("played");
   $(".play_icon-nplayer").toggleClass("paused");
-});
+};
