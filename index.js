@@ -438,16 +438,16 @@ Webflow.push(function () {
         destroyWavesurfer();
         wavesurfer = WaveSurfer.create({
           container: ".wf_wrap",
+          height: 32,
+          barRadius: 2,
+          barHeight: 1.5,
           barWidth: 2,
-          barHeight: 1.1,
-          barMinHeight: 6,
-          barGap: 0.5,
+          barGap: 3,
           responsive: true,
           interact: false,
-          progressColor: "#00fff6",
           cursorColor: "transparent",
-          height: 24,
-          barRadius: 2,
+          progressColor: "#00fff6",
+          scrollParent: false,
         });
         wavesurfer.load(convertedFiles.original);
         wavesurfer.setVolume(0);
