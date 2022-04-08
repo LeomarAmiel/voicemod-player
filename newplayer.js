@@ -1,4 +1,4 @@
-var plyBtn = document.getElementById("control");
+var plyBtn = document.getElementById("nplayer_play");
 var wavesurfer = WaveSurfer.create({
   container: ".waveform-share",
   height: 32,
@@ -19,3 +19,8 @@ wavesurfer.load(
 plyBtn.onclick = function () {
   wavesurfer.playPause();
 };
+
+function toggleIcon() {
+  $(".pause_icon-nplayer").toggleClass("played");
+  $(".play_icon-nplayer").toggleClass("paused");
+}
