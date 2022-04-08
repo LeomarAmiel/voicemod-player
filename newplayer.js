@@ -21,8 +21,19 @@ function toggleIcon() {
   $(".play_icon-nplayer").toggleClass("paused");
 }
 
+let isPlaying = false;
+let shouldResetWavesurfer = false;
+
 plyBtn.onclick = function () {
-  wavesurfer.play();
-  wavesurfer.seekTo(0);
+  isPlaying = !isPlaying;
+  if (shouldResetWavesurfer && isPlaying) {
+    wavesurfer.seekTo(0);
+    shouldResetWavesurfer = false;
+  }
+  if (isPlaying) {
+    wavesurfer.play();
+  } else {
+    wavesurfer.pause();
+  }
   toggleIcon();
 };
