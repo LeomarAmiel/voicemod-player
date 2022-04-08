@@ -1,10 +1,10 @@
 var plyBtn = document.getElementById("control");
 var wavesurfer = WaveSurfer.create({
   container: ".waveform-share",
-  height: 48,
+  height: 32,
   barRadius: 2,
   barHeight: 1.5,
-  barWidth: 2,
+  barWidth: 3,
   barGap: 4,
   responsive: true,
   interact: false,
