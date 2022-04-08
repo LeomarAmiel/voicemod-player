@@ -78,7 +78,7 @@ Webflow.push(function () {
       barRadius: 2,
       barHeight: 1.5,
       barWidth: 2,
-      barGap: 4,
+      barGap: 3,
       responsive: true,
       interact: false,
       cursorColor: "transparent",
