@@ -3,8 +3,8 @@ Webflow.push(function () {
   const lottie = Webflow.require("lottie").lottie;
   const REQUEST_KEY = "voicemod_mic_request";
   const animations = lottie.getRegisteredAnimations();
-  const API_URL = "https://api.voicemod.net/v2/cloud/audio";
-  const X_KEY = "DGx0ojrgI6lpD7M6kqecr4jkh5in4q8c";
+  const API_URL = "https://api.voicemod.net/v2/cloud";
+  const X_KEY = "zqqztBHlkyIOAHMJgVaskJWrqO2ssXQo";
   const MOD_AUDIO = "control_upload_audio_transformed";
   const ORIG_AUDIO = "control_upload_audio_original";
   const SHARE_SNIPPET_URL = "https://voicemod-net.webflow.io/share-snippet";
