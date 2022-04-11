@@ -74,16 +74,16 @@ Webflow.push(function () {
     destroyWavesurfer();
     wavesurfer = WaveSurfer.create({
       container: ".waveform-share",
-      height: 48,
-      barRadius: 2,
-      barHeight: 1,
       barWidth: 2,
-      barGap: 1,
+      barHeight: 1.1,
+      barMinHeight: 6,
+      barGap: 0.5,
       responsive: true,
       interact: false,
-      cursorColor: "transparent",
       progressColor: "#00fff6",
-      scrollParent: false,
+      cursorColor: "transparent",
+      height: 24,
+      barRadius: 2,
     });
     wavesurfer.load(url);
     wavesurfer.setVolume(0);
