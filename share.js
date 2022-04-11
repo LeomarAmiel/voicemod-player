@@ -82,7 +82,7 @@ Webflow.push(function () {
       interact: false,
       progressColor: "#00fff6",
       cursorColor: "transparent",
-      height: 32,
+      height: 28,
       barRadius: 2,
     });
     wavesurfer.load(url);
