@@ -439,9 +439,9 @@ Webflow.push(function () {
         wavesurfer = WaveSurfer.create({
           container: ".wf_wrap",
           barWidth: 2,
-          barHeight: 1.1,
+          barHeight: 1.5,
           barMinHeight: 6,
-          barGap: 0.5,
+          barGap: 2,
           responsive: true,
           interact: false,
           progressColor: "#00fff6",
