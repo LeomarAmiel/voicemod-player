@@ -1,7 +1,7 @@
 var Webflow = Webflow || [];
 Webflow.push(function () {
-  const API_URL = "https://staging-gateway-api.voicemod.net/v2/cloud";
-  const X_KEY = "zqqztBHlkyIOAHMJgVaskJWrqO2ssXQo";
+  const API_URL = "https://api.voicemod.net/v2/cloud";
+  const X_KEY = "DGx0ojrgI6lpD7M6kqecr4jkh5in4q8c";
   const params = Object.fromEntries(
     new URLSearchParams(window.location.search)
   );
